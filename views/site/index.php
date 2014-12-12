@@ -21,7 +21,6 @@ $this->title = 'Deploy';
 
                 'id',
                 'title',
-                'command:ntext',
                 ['attribute' => 'category_id',
                     'value' => function ($model) {
                             return $model->getCategory()->one()->title;
@@ -34,9 +33,24 @@ $this->title = 'Deploy';
                 ],
                  'last_deploy_date',
 
-                ['class' => 'yii\grid\ActionColumn'],
+                [
+                    'class' => \yii\grid\ActionColumn::className(),
+                    'buttons'=>[
+                        'deploy'=>function ($url, $model) {
+                                $url=Yii::$app->getUrlManager()->createUrl(['site/deploy','id'=>$model->id]);
+                                return \yii\helpers\Html::a(
+                                    'Deploy',
+                                    $url,
+                                    [
+                                        'class' => 'btn btn-danger'
+                                    ]
+                                );
+                            }
+                    ],
+                    'template'=>'{deploy}',
+                ]
+
             ],
         ]); ?>
-
     </div>
 </div>

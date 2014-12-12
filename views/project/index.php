@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'last_deploy_date',
 
             ['class' => 'yii\grid\ActionColumn'],
+
         ],
     ]); ?>
 
