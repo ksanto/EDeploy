@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -16,11 +17,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'command')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'category_id')->textInput() ?>
+    <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(app\models\Category::find()->all(), 'id', 'title')) ?>
 
-    <?= $form->field($model, 'active_status')->dropDownList([ 1 => '1', 0 => '0', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'last_deploy_date')->textInput() ?>
+    <?= $form->field($model, 'active_status')->dropDownList($model->getStatusList()) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -18,6 +18,9 @@ use Yii;
  */
 class Project extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE     = 1;
+    const STATUS_NOT_ACTIVE = 0;
+
     /**
      * @inheritdoc
      */
@@ -61,5 +64,13 @@ class Project extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    public function getStatusList()
+    {
+        return array(
+            self::STATUS_ACTIVE     => 'Active',
+            self::STATUS_NOT_ACTIVE => 'Not active'
+        );
     }
 }

@@ -32,11 +32,13 @@ AppAsset::register($this);
                     'class' => 'navbar-inverse navbar-fixed-top',
                 ],
             ]);
-            if (Yii::$app->user->isGuest) {
+            if (!Yii::$app->user->isGuest) {
                 echo Nav::widget([
                     'options' => ['class' => 'navbar-nav navbar-right'],
                     'items' => [
                         ['label' => 'Home', 'url' => ['/site/index']],
+                        ['label' => 'Categories', 'url' => ['/category/index']],
+                        ['label' => 'Projects', 'url' => ['/project/index']],
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                             'url' => ['/site/logout'],
                             'linkOptions' => ['data-method' => 'post']],
