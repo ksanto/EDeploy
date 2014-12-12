@@ -27,8 +27,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'command:ntext',
-            'category_id',
-            'active_status',
+            ['attribute' => 'category_id',
+                'value' => function ($model) {
+                        return $model->getCategory()->one()->title;
+                    }
+            ],
+            ['attribute' => 'active_status',
+                'value' => function ($model) {
+                        return $model->getStatus();
+                    }
+            ],
             // 'last_deploy_date',
 
             ['class' => 'yii\grid\ActionColumn'],

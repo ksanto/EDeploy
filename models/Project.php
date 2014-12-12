@@ -66,6 +66,15 @@ class Project extends \yii\db\ActiveRecord
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
+    public function getStatus()
+    {
+        $status = $this->getStatusList();
+        if(!isset($status[$this->active_status]))
+            return false;
+
+        return $status[$this->active_status];
+    }
+
     public function getStatusList()
     {
         return array(

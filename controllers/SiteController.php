@@ -6,8 +6,9 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\Project;
 
 class SiteController extends Controller
 {
@@ -45,10 +46,16 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-      if (\Yii::$app->user->isGuest) {
-        return $this->redirect(['site/login'],302);
-      }
-      return $this->render('index');
+        if (\Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login'], 302);
+        }
+        $dataProvider = new ActiveDataProvider([
+            'query' => Project::find(),
+        ]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     public function actionLogin()
