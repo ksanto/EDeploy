@@ -109,6 +109,8 @@ class ProjectController extends Controller
         {
             if (\Yii::$app->user->isGuest)
                 return $this->goHome();
+
+            return true;
         }
         return false;
     }

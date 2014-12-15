@@ -53,7 +53,7 @@ class Project extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Title',
             'command' => 'Command',
-            'category_id' => 'Category ID',
+            'category_id' => 'Category',
             'active_status' => 'Active Status',
             'last_deploy_date' => 'Last Deploy Date',
             'username' => 'User Name',
@@ -91,6 +91,21 @@ class Project extends \yii\db\ActiveRecord
     {
         $this->last_deploy_date = new Expression('NOW()');
         $this->save();
+    }
+
+    public function getKey()
+    {
+        return md5($this->username.'sl43'.$this->password);
+    }
+
+    public function checkKey($key)
+    {
+        return $this->getKey()==$key;
+    }
+
+    public function createParams()
+    {
+
     }
 
     public function beforeValidate()

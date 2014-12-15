@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -37,4 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    <p>
+        Для выкладки извне дерните следующий url: <?= Url::base(true).Url::to(['/site/apideploy', 'id' => $model->id, 'key' => $model->getKey()]);?>
+    </p>
 </div>

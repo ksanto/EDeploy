@@ -60,9 +60,8 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
-        if (!\Yii::$app->user->isGuest) {
+        if (!\Yii::$app->user->isGuest)
             return $this->goHome();
-        }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
@@ -81,9 +80,46 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    public function actionDeploy($id)
+    /**
+     * Выполняем выкладку http запросом
+     *
+     * @param $id
+     * @param $key
+     * @return bool|string
+     */
+    public function actionApideploy($id, $key)
     {
         $model = Project::findOne($id);
+        if($model->checkKey($key))
+        {
+            $result = '';
+            $ssh = Yii::$app->sshConnector->connect(
+                $model->host,
+                $model->username,
+                $model->password
+            );
+            if($ssh)
+            {
+                $result = Yii::$app->sshConnector->run($model->command);
+                $model->setDeployDate();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Выкладка из админки.
+     *
+     * @param $id
+     * @return string|\yii\web\Response
+     */
+    public function actionDeploy($id)
+    {
+        if(\Yii::$app->user->isGuest)
+            return $this->redirect(['site/login'], 302);
+
+        $model = Project::findOne($id);
+
         $result = '';
         $ssh = Yii::$app->sshConnector->connect(
             $model->host,
