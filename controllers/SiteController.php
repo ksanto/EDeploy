@@ -93,7 +93,7 @@ class SiteController extends Controller
         if($ssh)
         {
             $result = Yii::$app->sshConnector->run($model->command);
-
+            $model->setDeployDate();
         }
         return $this->render('deploy', [
             'message' => $result

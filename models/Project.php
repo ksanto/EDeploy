@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "project".
@@ -84,6 +85,12 @@ class Project extends \yii\db\ActiveRecord
             self::STATUS_ACTIVE     => 'Active',
             self::STATUS_NOT_ACTIVE => 'Not active'
         );
+    }
+
+    public function setDeployDate()
+    {
+        $this->last_deploy_date = new Expression('NOW()');
+        $this->save();
     }
 
     public function beforeValidate()
