@@ -103,6 +103,16 @@ class ProjectController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function beforeAction($action)
+    {
+        if(parent::beforeAction($action))
+        {
+            if (\Yii::$app->user->isGuest)
+                return $this->goHome();
+        }
+        return false;
+    }
+
     /**
      * Finds the Project model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
