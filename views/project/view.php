@@ -39,6 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <p>
-        Для выкладки извне дерните следующий url: <?= Url::base(true).Url::to(['/site/apideploy', 'id' => $model->id, 'key' => $model->getKey()]);?>
+        Для выкладки извне дерните следующий url:
+        <b>
+            <?= Url::base(true).Url::to(['/site/apideploy', 'id' => $model->id, 'key' => $model->getKey()]);?>
+        </b>
     </p>
 </div>
