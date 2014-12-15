@@ -35,11 +35,11 @@ class Project extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'command'], 'required'],
-            [['command', 'active_status'], 'string'],
+            [['title', 'command', 'username', 'host'], 'required'],
+            [['command', 'active_status', 'username', 'password', 'host'], 'string'],
             [['category_id'], 'integer'],
             [['last_deploy_date'], 'safe'],
-            [['title'], 'string', 'max' => 255]
+            [['title', 'username', 'password', 'host'], 'string', 'max' => 255]
         ];
     }
 
@@ -55,6 +55,9 @@ class Project extends \yii\db\ActiveRecord
             'category_id' => 'Category ID',
             'active_status' => 'Active Status',
             'last_deploy_date' => 'Last Deploy Date',
+            'username' => 'User Name',
+            'password' => 'Password',
+            'host' => 'Host',
         ];
     }
 

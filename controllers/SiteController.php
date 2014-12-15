@@ -58,11 +58,6 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionDeploy()
-    {
-
-    }
-
     public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {

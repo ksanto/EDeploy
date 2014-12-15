@@ -38,6 +38,9 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'sshConnector' => [
+            'class' => 'app\components\SshConnector'
+        ]
     ],
     'params' => $params,
 ];

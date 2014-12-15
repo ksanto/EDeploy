@@ -103,6 +103,21 @@ class ProjectController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionDeploy($id)
+    {
+        $model = $this->findModel($id);
+        $ssh = Yii::$app->sshConnector->connect(
+            $model->host,
+            $model->username,
+            $model->password
+        );
+        if($ssh)
+        {
+            echo Yii::$app->sshConnector->run($model->command);
+        }
+        exit;
+    }
+
     /**
      * Finds the Project model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
