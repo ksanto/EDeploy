@@ -85,4 +85,20 @@ class Project extends \yii\db\ActiveRecord
             self::STATUS_NOT_ACTIVE => 'Not active'
         );
     }
+
+    public function beforeValidate()
+    {
+        // очистим пробельные символы
+        if(parent::beforeValidate())
+        {
+            $command = explode(PHP_EOL, $this->command);
+            foreach($command as &$value)
+            {
+                $value = trim($value);
+            }
+            $this->command = implode(PHP_EOL, $command);
+            return true;
+        }
+        return false;
+    }
 }

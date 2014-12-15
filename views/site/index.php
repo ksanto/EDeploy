@@ -37,7 +37,7 @@ $this->title = 'Deploy';
                     'class' => \yii\grid\ActionColumn::className(),
                     'buttons'=>[
                         'deploy'=>function ($url, $model) {
-                                $url=Yii::$app->getUrlManager()->createUrl(['project/deploy','id'=>$model->id]);
+                                $url=Yii::$app->getUrlManager()->createUrl(['site/deploy','id'=>$model->id]);
                                 return \yii\helpers\Html::a(
                                     'Deploy',
                                     $url,

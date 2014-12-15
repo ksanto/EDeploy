@@ -80,4 +80,23 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+
+    public function actionDeploy($id)
+    {
+        $model = Project::findOne($id);
+        $result = '';
+        $ssh = Yii::$app->sshConnector->connect(
+            $model->host,
+            $model->username,
+            $model->password
+        );
+        if($ssh)
+        {
+            $result = Yii::$app->sshConnector->run($model->command);
+
+        }
+        return $this->render('deploy', [
+            'message' => $result
+        ]);
+    }
 }
