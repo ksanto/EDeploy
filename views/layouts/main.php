@@ -39,6 +39,7 @@ AppAsset::register($this);
                         ['label' => 'Home', 'url' => ['/site/index']],
                         ['label' => 'Categories', 'url' => ['/category/index']],
                         ['label' => 'Projects', 'url' => ['/project/index']],
+                        ['label' => 'Profile', 'url' => ['/profile/index']],
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                             'url' => ['/site/logout'],
                             'linkOptions' => ['data-method' => 'post']],

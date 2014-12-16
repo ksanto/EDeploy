@@ -8,8 +8,6 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Project */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Projects'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="project-view">
 

@@ -9,8 +9,6 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'Create {modelClass}', [
     'modelClass' => 'Project',
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Projects'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="project-create">
 
