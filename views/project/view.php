@@ -32,8 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'command:ntext',
-            'category_id',
-            'active_status',
+            [
+                'attribute' => 'category_id',
+                'value' =>  $model->getCategory()->one()->title
+            ],
+            [
+                'attribute' => 'active_status',
+                'value' =>  $model->getStatus()
+            ],
             'last_deploy_date',
         ],
     ]) ?>

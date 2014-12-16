@@ -22,10 +22,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'title',
+            [
+                'attribute' => 'title',
+                'headerOptions' => ['class' => 'col-xs-2'],
+                'format' => 'html',
+                'value' => function($model) {
+                        return Html::tag('strong', $model->title);
+                    }
+            ],
             'command:ntext',
             ['attribute' => 'category_id',
                 'value' => function ($model) {
@@ -39,7 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             // 'last_deploy_date',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'headerOptions' => ['class' => 'col-xs-1']
+            ],
 
         ],
     ]); ?>

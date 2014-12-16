@@ -8,7 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use app\models\LoginForm;
-use app\models\Project;
+use app\models\Category;
 
 class SiteController extends Controller
 {
@@ -50,7 +50,7 @@ class SiteController extends Controller
             return $this->redirect(['site/login'], 302);
         }
         $dataProvider = new ActiveDataProvider([
-            'query' => Project::find(),
+            'query' => Category::find(),
         ]);
 
         return $this->render('index', [

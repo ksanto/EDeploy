@@ -22,12 +22,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'title',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['class' => 'col-xs-1']
+            ],
+            [
+                'attribute' => 'title',
+                'format' => 'html',
+                'value' => function($model) {
+                        return Html::tag('strong', $model->title);
+                    }
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'headerOptions' => ['class' => 'col-xs-1']
+            ],
         ],
     ]); ?>
 
