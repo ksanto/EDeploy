@@ -98,4 +98,19 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return $this->password === $password;
     }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if($this->password) {
+                $this->auth_key     = md5(str_shuffle($this->password));
+                $this->access_token = md5(str_shuffle($this->password));
+            } else {
+                // Если пароль не установили, то остается старый пароль
+                unset($this->password);
+            }
+            return true;
+        }
+        return false;
+    }
 }

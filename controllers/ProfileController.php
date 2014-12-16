@@ -14,17 +14,19 @@ use yii\web\NotFoundHttpException;
 
 class ProfileController extends Controller
 {
+    /**
+     * Изменение данных профиля
+     * @return string
+     */
     public function actionIndex()
     {
         $model = $this->findModel(Yii::$app->user->id);
 
-        $pass = $model->password;
-        $model->load(Yii::$app->request->post());
 
-        // Если пароль не установили, то остается старый пароль
-        if(empty($model->password))
-            $model->password = $pass;
-        $model->save();
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+            $model->save(false);
+        }
 
         // Отображаем поле пароля пустым
         $model->password = '';
