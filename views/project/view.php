@@ -43,7 +43,7 @@ $this->title = $model->title;
     ]) ?>
 
     <p>
-        Для выкладки извне дерните следующий url:
+        <?=Yii::t('app', 'Make a request for outside deploy:')?>
         <b>
             <?= Url::base(true).Url::to(['/site/apideploy', 'id' => $model->id, 'key' => $model->getKey()]);?>
         </b>
