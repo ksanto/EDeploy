@@ -96,13 +96,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return $this->password === md5($password);
     }
 
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
             if($this->password) {
+                $this->password     = md5($this->password);
                 $this->auth_key     = md5(str_shuffle($this->password));
                 $this->access_token = md5(str_shuffle($this->password));
             } else {

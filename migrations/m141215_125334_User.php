@@ -19,6 +19,14 @@ class m141215_125334_User extends Migration
             'auth_key' => Schema::TYPE_STRING . ' NOT NULL',
             'access_token' => Schema::TYPE_STRING . ' NOT NULL',
         ], $tableOptions);
+
+        // create default user
+        $this->insert('{{%user}}', [
+            'username'      => 'admin',
+            'password'      => md5('admin'),
+            'auth_key'      => md5(str_shuffle('admin')),
+            'access_token'  => md5(str_shuffle('admin'))
+        ]);
     }
 
     public function down()
