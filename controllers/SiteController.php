@@ -82,33 +82,6 @@ class SiteController extends Controller
     }
 
     /**
-     * Выполняем выкладку http запросом
-     *
-     * @param $id
-     * @param $key
-     * @return bool|string
-     */
-    public function actionApideploy($id, $key)
-    {
-        $model = Project::findOne($id);
-        if($model->checkKey($key))
-        {
-            $result = '';
-            $ssh = Yii::$app->sshConnector->connect(
-                $model->host,
-                $model->username,
-                $model->password
-            );
-            if($ssh)
-            {
-                $result = Yii::$app->sshConnector->run($model->command);
-                $model->setDeployDate();
-            }
-        }
-        return false;
-    }
-
-    /**
      * Выкладка из админки.
      *
      * @param $id

@@ -45,7 +45,7 @@ $this->title = $model->title;
     <p>
         <?=Yii::t('app', 'Make a request for outside deploy:')?>
         <b>
-            <?= Url::base(true).Url::to(['/site/apideploy', 'id' => $model->id, 'key' => $model->getKey()]);?>
+            <?= Url::base(true).Url::to(['/api/index', 'id' => $model->id, 'key' => $model->getKey()]);?>
         </b>
     </p>
 </div>
