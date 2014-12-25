@@ -3,11 +3,13 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\User;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use app\models\User;
+
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -21,6 +23,16 @@ class UserController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ]
                 ],
             ],
         ];
@@ -103,15 +115,6 @@ class UserController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    public function beforeAction($action)
-    {
-        if (\Yii::$app->user->isGuest)
-            return $this->goHome();
-        if(!parent::beforeAction($action))
-            return false;
-        return true;
     }
 
     /**
