@@ -2,7 +2,6 @@
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 /* @var $this \yii\web\View */
@@ -39,7 +38,8 @@ AppAsset::register($this);
                         ['label' => 'Home', 'url' => ['/site/index']],
                         ['label' => 'Categories', 'url' => ['/category/index']],
                         ['label' => 'Projects', 'url' => ['/project/index']],
-                        ['label' => 'Profile', 'url' => ['/profile/index']],
+                        ['label' => 'Users', 'url' => ['/user/index']],
+                        ['label' => 'Profile', 'url' => ['/user/update', 'id' => Yii::$app->user->identity->id]],
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                             'url' => ['/site/logout'],
                             'linkOptions' => ['data-method' => 'post']],
