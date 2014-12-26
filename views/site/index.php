@@ -38,7 +38,12 @@ $this->title = 'Deploy';
                                 }
                         ],
                         'last_deploy_date',
-
+                        ['attribute' => 'last_user_deploy_id',
+                            'value' => function ($model) {
+                                return $model->getUser()->one()->username;
+                            },
+                            'headerOptions' => ['class' => 'col-xs-2']
+                        ],
                         [
                             'class' => \yii\grid\ActionColumn::className(),
                             'buttons' => [

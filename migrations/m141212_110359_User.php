@@ -18,7 +18,7 @@ class m141212_110359_User extends Migration
             'password' => Schema::TYPE_STRING . ' NOT NULL',
             'auth_key' => Schema::TYPE_STRING . ' NOT NULL',
             'access_token' => Schema::TYPE_STRING . ' NOT NULL',
-            'is_admin' => Schema::TYPE_STRING . ' DEFAULT 0'
+            'is_admin' => "enum('1','0') NOT NULL DEFAULT '0'"
         ], $tableOptions);
 
         // create default user

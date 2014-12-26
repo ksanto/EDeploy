@@ -4,6 +4,8 @@ namespace app\models;
 
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    const ADMIN     = 1;
+    const NOT_ADMIN = 0;
     /**
      * @inheritdoc
      */
@@ -20,6 +22,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return [
             [['username', 'password', 'auth_key', 'access_token'], 'required'],
             [['username', 'password', 'auth_key', 'access_token'], 'string'],
+            [['is_admin'], 'integer'],
         ];
     }
 
@@ -34,6 +37,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'password' => 'Password',
             'auth_key' => 'Auth Key',
             'access_token' => 'Access Token',
+            'is_admin' => 'Is Admin',
         ];
     }
 
@@ -97,6 +101,23 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === md5($password);
+    }
+
+    public function getPermission()
+    {
+        $status = $this->getPermissionList();
+        if(!isset($status[$this->is_admin]))
+            return false;
+
+        return $status[$this->is_admin];
+    }
+
+    public function getPermissionList()
+    {
+        return array(
+            self::ADMIN     => 'Yes',
+            self::NOT_ADMIN => 'No'
+        );
     }
 
     public function beforeValidate()

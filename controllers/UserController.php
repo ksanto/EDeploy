@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
@@ -109,9 +110,13 @@ class UserController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
+        if(1>=count(User::findAll(['is_admin' => User::ADMIN])))
+            throw new NotFoundHttpException('You don\'t delete last admin');
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

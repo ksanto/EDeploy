@@ -38,7 +38,7 @@ class Project extends \yii\db\ActiveRecord
         return [
             [['title', 'command', 'username', 'host'], 'required'],
             [['command', 'active_status', 'username', 'password', 'host'], 'string'],
-            [['category_id'], 'integer'],
+            [['category_id', 'last_user_deploy_id'], 'integer'],
             [['last_deploy_date'], 'safe'],
             [['title', 'username', 'password', 'host'], 'string', 'max' => 255]
         ];
@@ -56,6 +56,7 @@ class Project extends \yii\db\ActiveRecord
             'category_id' => 'Category',
             'active_status' => 'Active Status',
             'last_deploy_date' => 'Last Deploy Date',
+            'last_user_deploy_id' => 'Last User Deploy',
             'username' => 'User Name',
             'password' => 'Password',
             'host' => 'Host',
@@ -68,6 +69,14 @@ class Project extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'last_user_deploy_id']);
     }
 
     public function getStatus()
