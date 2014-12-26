@@ -33,6 +33,13 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
+                        'matchCallback' => function($rule, $action) {
+                            // пользователь может изменять свой профиль
+                            if('update' === $action->id && (int)Yii::$app->getRequest()->get('id') === Yii::$app->user->identity->getId())
+                                return true;
+                            // админ может все
+                            return (bool)Yii::$app->user->identity->is_admin;
+                        }
                     ]
                 ],
             ],
@@ -110,12 +117,12 @@ class UserController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws Exception if the model cannot be found
      */
     public function actionDelete($id)
     {
-        if(1>=count(User::findAll(['is_admin' => User::ADMIN])))
-            throw new NotFoundHttpException('You don\'t delete last admin');
+        if(1>=User::find()->where(['is_admin' => User::ADMIN])->count())
+            throw new Exception('You don\'t delete last admin');
 
         $this->findModel($id)->delete();
 

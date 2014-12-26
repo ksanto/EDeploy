@@ -32,19 +32,22 @@ AppAsset::register($this);
                 ],
             ]);
             if (!Yii::$app->user->isGuest) {
-                echo Nav::widget([
-                    'options' => ['class' => 'navbar-nav navbar-right'],
-                    'items' => [
-                        ['label' => 'Home', 'url' => ['/site/index']],
-                        ['label' => 'Categories', 'url' => ['/category/index']],
-                        ['label' => 'Projects', 'url' => ['/project/index']],
-                        ['label' => 'Users', 'url' => ['/user/index']],
-                        ['label' => 'Profile', 'url' => ['/user/update', 'id' => Yii::$app->user->identity->id]],
-                        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                            'url' => ['/site/logout'],
-                            'linkOptions' => ['data-method' => 'post']],
-                    ],
-                ]);
+                $nav_config['options'] = ['class' => 'navbar-nav navbar-right'];
+                $nav_config['items'][] = ['label' => 'Home', 'url' => ['/site/index']];
+                $nav_config['items'][] = ['label' => 'Categories', 'url' => ['/category/index']];
+                $nav_config['items'][] = ['label' => 'Projects', 'url' => ['/project/index']];
+
+                // админу покажем профили пользователей
+                if(Yii::$app->user->identity->is_admin)
+                    $nav_config['items'][] = ['label' => 'Users', 'url' => ['/user/index']];
+
+                $nav_config['items'][] = ['label' => 'Profile', 'url' => ['/user/update', 'id' => Yii::$app->user->identity->id]];
+                $nav_config['items'][] = ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                                            'url' => ['/site/logout'],
+                                            'linkOptions' => ['data-method' => 'post']
+                ];
+
+                echo Nav::widget($nav_config);
             }
             NavBar::end();
         ?>
