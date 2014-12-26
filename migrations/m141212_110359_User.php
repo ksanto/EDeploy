@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m141215_125334_User extends Migration
+class m141212_110359_User extends Migration
 {
     public function up()
     {
@@ -18,6 +18,7 @@ class m141215_125334_User extends Migration
             'password' => Schema::TYPE_STRING . ' NOT NULL',
             'auth_key' => Schema::TYPE_STRING . ' NOT NULL',
             'access_token' => Schema::TYPE_STRING . ' NOT NULL',
+            'is_admin' => Schema::TYPE_STRING . ' DEFAULT 0'
         ], $tableOptions);
 
         // create default user
@@ -25,7 +26,8 @@ class m141215_125334_User extends Migration
             'username'      => 'admin',
             'password'      => md5('admin'),
             'auth_key'      => md5(str_shuffle('admin')),
-            'access_token'  => md5(str_shuffle('admin'))
+            'access_token'  => md5(str_shuffle('admin')),
+            'is_admin'      => '1'
         ]);
     }
 

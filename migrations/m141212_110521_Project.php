@@ -19,14 +19,20 @@ class m141212_110521_Project extends Migration
             'category_id' => Schema::TYPE_INTEGER,
             'active_status' => "enum('1','0') NOT NULL DEFAULT '1'",
             'last_deploy_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL',
+            'last_user_deploy_id' => Schema::TYPE_INTEGER,
             'username' => Schema::TYPE_STRING . ' NOT NULL',
             'password' => Schema::TYPE_STRING,
             'host' => Schema::TYPE_STRING . ' NOT NULL',
         ], $tableOptions);
 
         $this->createIndex('FK_project_category', '{{%project}}', 'category_id');
+        $this->createIndex('FK_project_user', '{{%project}}', 'last_user_deploy_id');
+
         $this->addForeignKey(
             'FK_project_category', '{{%project}}', 'category_id', '{{%category}}', 'id', 'SET NULL', 'CASCADE'
+        );
+        $this->addForeignKey(
+            'FK_project_user', '{{%project}}', 'last_user_deploy_id', '{{%user}}', 'id', 'SET NULL', 'CASCADE'
         );
     }
 
