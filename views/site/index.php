@@ -40,7 +40,7 @@ $this->title = 'Deploy';
                         'last_deploy_date',
                         ['attribute' => 'last_user_deploy_id',
                             'value' => function ($model) {
-                                return $model->getUser()->one()->username;
+                                return ($user = $model->getUser()->one()) ? $user->username : '';
                             },
                             'headerOptions' => ['class' => 'col-xs-2']
                         ],
