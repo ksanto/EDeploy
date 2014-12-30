@@ -29,7 +29,5 @@ class m141226_092350_DeployRight extends Migration
     public function down()
     {
         $this->dropTable('{{%deploy_right}}');
-
-        return false;
     }
 }

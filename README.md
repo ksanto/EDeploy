@@ -43,7 +43,8 @@ composer install
 
 ### Configs
 
-Copy `db.back.php` without `.back` to config directory and adjust to your needs.
+Copy `db.back.php` and `params.back.php` without `.back` to config directory and adjust to your needs.
+Change `securityKey` in `params.php`.
 
 
 ### Database

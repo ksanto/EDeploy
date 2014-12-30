@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -99,7 +100,7 @@ class SiteController extends Controller
         $ssh = Yii::$app->sshConnector->connect(
             $model->host,
             $model->username,
-            $model->password
+            Yii::$app->getSecurity()->decryptByKey($model->password, $model->key)
         );
         if($ssh)
         {

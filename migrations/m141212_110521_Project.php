@@ -21,7 +21,7 @@ class m141212_110521_Project extends Migration
             'last_deploy_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL',
             'last_user_deploy_id' => Schema::TYPE_INTEGER,
             'username' => Schema::TYPE_STRING . ' NOT NULL',
-            'password' => Schema::TYPE_STRING,
+            'password' => Schema::TYPE_BINARY,
             'host' => Schema::TYPE_STRING . ' NOT NULL',
         ], $tableOptions);
 

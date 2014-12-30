@@ -116,7 +116,7 @@ class UserController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
-     * @throws Exception if the model cannot be found
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {

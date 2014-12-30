@@ -95,6 +95,8 @@ class ProjectController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            // Отображаем поле пароля пустым
+            $model->password = '';
             return $this->render('update', [
                 'model' => $model,
             ]);

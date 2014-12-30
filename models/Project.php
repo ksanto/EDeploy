@@ -37,8 +37,7 @@ class Project extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'command', 'username', 'host'], 'required'],
-            [['command', 'active_status', 'username', 'password', 'host'], 'string'],
-            [['category_id', 'last_user_deploy_id'], 'integer'],
+            [['category_id', 'last_user_deploy_id', 'active_status'], 'integer'],
             [['last_deploy_date'], 'safe'],
             [['title', 'username', 'password', 'host'], 'string', 'max' => 255]
         ];
@@ -102,32 +101,43 @@ class Project extends \yii\db\ActiveRecord
         $this->save();
     }
 
-    public function getKey()
+    public function getToken()
     {
         return md5($this->username.'sl43'.$this->password);
     }
 
     public function checkKey($key)
     {
-        return $this->getKey()==$key;
+        return $this->getToken()==$key;
     }
 
-    public function createParams()
+    /**
+     * Очистка пробельных символов в командах
+     */
+    public function trimCommand()
     {
-
+        $command = explode(PHP_EOL, $this->command);
+        foreach($command as &$value)
+        {
+            $value = trim($value);
+        }
+        $this->command = implode(PHP_EOL, $command);
     }
 
     public function beforeValidate()
     {
-        // очистим пробельные символы
         if(parent::beforeValidate())
         {
-            $command = explode(PHP_EOL, $this->command);
-            foreach($command as &$value)
-            {
-                $value = trim($value);
+            $this->trimCommand();
+            if($this->password) {
+                $this->password     = Yii::$app->getSecurity()->encryptByKey(
+                    $this->password,
+                    Yii::$app->params['securityKey']
+                );
+            } else {
+                // Если пароль не установили, то остается старый пароль
+                unset($this->password);
             }
-            $this->command = implode(PHP_EOL, $command);
             return true;
         }
         return false;

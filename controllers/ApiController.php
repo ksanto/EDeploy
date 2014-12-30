@@ -20,13 +20,13 @@ class ApiController extends Controller
     public function actionIndex($id, $key)
     {
         $model = Project::findOne($id);
-        if($model->checkKey($key))
+        if($model->checkToken($key))
         {
             $result = '';
             $ssh = Yii::$app->sshConnector->connect(
                 $model->host,
                 $model->username,
-                $model->password
+                Yii::$app->getSecurity()->decryptByKey($model->password, $model->key)
             );
             if($ssh)
             {
