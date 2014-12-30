@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use Yii;
-use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
@@ -121,10 +120,12 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        if(1>=User::find()->where(['is_admin' => User::ADMIN])->count())
-            throw new Exception('You don\'t delete last admin');
+        $model = $this->findModel($id);
 
-        $this->findModel($id)->delete();
+        if($model->is_admin && 1>=User::find()->where(['is_admin' => User::ADMIN])->count())
+            throw new NotFoundHttpException('You don\'t delete last admin');
+
+        $model->delete();
 
         return $this->redirect(['index']);
     }

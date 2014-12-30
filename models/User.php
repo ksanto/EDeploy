@@ -2,6 +2,9 @@
 
 namespace app\models;
 
+use Yii;
+use yii\base\NotSupportedException;
+
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     const ADMIN     = 1;
@@ -11,7 +14,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function tableName()
     {
-        return 'user';
+        return '{{%user}}';
     }
 
     /**
@@ -20,9 +23,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password', 'auth_key', 'access_token'], 'required'],
-            [['username', 'password', 'auth_key', 'access_token'], 'string'],
-            [['is_admin'], 'integer'],
+            [['username', 'password'], 'required'],
+            [['username', 'password', 'auth_key'], 'string'],
+            [['is_admin'], 'in', 'range' => array_keys($this->getPermissionList())],
         ];
     }
 
@@ -36,7 +39,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'username' => 'User Name',
             'password' => 'Password',
             'auth_key' => 'Auth Key',
-            'access_token' => 'Access Token',
             'is_admin' => 'Is Admin',
         ];
     }
@@ -54,7 +56,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['access_token' => $token]);
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
     /**
@@ -100,7 +102,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === md5($password);
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 
     public function getPermission()
@@ -124,9 +126,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         if (parent::beforeValidate()) {
             if($this->password) {
-                $this->password     = md5($this->password);
-                $this->auth_key     = md5(str_shuffle($this->password));
-                $this->access_token = md5(str_shuffle($this->password));
+                $this->password     = Yii::$app->security->generatePasswordHash($this->password);
+                $this->auth_key     = Yii::$app->security->generateRandomString();
             } else {
                 // Если пароль не установили, то остается старый пароль
                 unset($this->password);

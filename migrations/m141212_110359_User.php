@@ -17,16 +17,14 @@ class m141212_110359_User extends Migration
             'username' => Schema::TYPE_STRING . ' NOT NULL',
             'password' => Schema::TYPE_STRING . ' NOT NULL',
             'auth_key' => Schema::TYPE_STRING . ' NOT NULL',
-            'access_token' => Schema::TYPE_STRING . ' NOT NULL',
             'is_admin' => "enum('1','0') NOT NULL DEFAULT '0'"
         ], $tableOptions);
 
         // create default user
         $this->insert('{{%user}}', [
             'username'      => 'admin',
-            'password'      => md5('admin'),
+            'password'      => '$2y$13$HYg5DZXSIkzUmdYUwNSTW.pqqsmrOeQdgrQcoeBpjkvdn3UFKxdmO',
             'auth_key'      => md5(str_shuffle('admin')),
-            'access_token'  => md5(str_shuffle('admin')),
             'is_admin'      => '1'
         ]);
     }
