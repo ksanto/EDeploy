@@ -31,6 +31,9 @@ class ProjectController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
+                        'matchCallback' => function($rule, $action) {
+                            return (bool)Yii::$app->user->identity->is_admin;
+                        }
                     ]
                 ],
             ],

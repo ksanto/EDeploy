@@ -34,12 +34,12 @@ AppAsset::register($this);
             if (!Yii::$app->user->isGuest) {
                 $nav_config['options'] = ['class' => 'navbar-nav navbar-right'];
                 $nav_config['items'][] = ['label' => 'Home', 'url' => ['/site/index']];
-                $nav_config['items'][] = ['label' => 'Categories', 'url' => ['/category/index']];
-                $nav_config['items'][] = ['label' => 'Projects', 'url' => ['/project/index']];
 
-                // админу покажем профили пользователей
-                if(Yii::$app->user->identity->is_admin)
+                if(Yii::$app->user->identity->is_admin) {
+                    $nav_config['items'][] = ['label' => 'Categories', 'url' => ['/category/index']];
+                    $nav_config['items'][] = ['label' => 'Projects', 'url' => ['/project/index']];
                     $nav_config['items'][] = ['label' => 'Users', 'url' => ['/user/index']];
+                }
 
                 $nav_config['items'][] = ['label' => 'Profile', 'url' => ['/user/update', 'id' => Yii::$app->user->identity->id]];
                 $nav_config['items'][] = ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
