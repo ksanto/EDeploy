@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use Yii;
-use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -46,6 +45,11 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
+            ],
+            'deploy' => [
+                'class'         => 'app\components\DeployAction',
+                'checkAccess'   => false,
+                'render'        => true
             ]
         ];
     }
@@ -84,31 +88,5 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
-    }
-
-    /**
-     * Выкладка из админки.
-     *
-     * @param $id
-     * @return string|\yii\web\Response
-     */
-    public function actionDeploy($id)
-    {
-        $model = Project::findOne($id);
-
-        $result = '';
-        $ssh = Yii::$app->sshConnector->connect(
-            $model->host,
-            $model->username,
-            Yii::$app->getSecurity()->decryptByKey($model->password, $model->key)
-        );
-        if($ssh)
-        {
-            $result = Yii::$app->sshConnector->run($model->command);
-            $model->setDeployDate();
-        }
-        return $this->render('deploy', [
-            'message' => $result
-        ]);
     }
 }

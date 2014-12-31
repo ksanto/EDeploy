@@ -95,10 +95,11 @@ class Project extends \yii\db\ActiveRecord
         );
     }
 
-    public function setDeployDate()
+    public function applyDeployData()
     {
-        $this->last_deploy_date = new Expression('NOW()');
-        $this->save();
+        $this->last_deploy_date     = new Expression('NOW()');
+        $this->last_user_deploy_id  = Yii::$app->getUser()->getIdentity()->getId();
+        $this->save(false);
     }
 
     public function getToken()
@@ -106,7 +107,7 @@ class Project extends \yii\db\ActiveRecord
         return md5($this->username.'sl43'.$this->password);
     }
 
-    public function checkKey($key)
+    public function checkToken($key)
     {
         return $this->getToken()==$key;
     }
