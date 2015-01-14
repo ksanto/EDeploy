@@ -27,6 +27,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => 255]) ?>
 
+    <? if($users = app\models\User::findAll(['is_admin' => (string)app\models\User::NOT_ADMIN])) {
+        echo $form->field($model, 'permissionUser')
+            ->checkboxList(
+                ArrayHelper::map(
+                    $users,
+                    'id',
+                    'username'
+                )
+            );
+    } ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

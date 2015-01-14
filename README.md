@@ -8,10 +8,11 @@ DIRECTORY STRUCTURE
 -------------------
 
       assets/             contains assets definition
-      commands/           contains console commands (controllers)
+      components/         contains application components
       config/             contains application configurations
       controllers/        contains Web controller classes
       mail/               contains view files for e-mails
+      migrations/         contains db migrations
       models/             contains model classes
       runtime/            contains files generated during runtime
       tests/              contains various tests for the basic application

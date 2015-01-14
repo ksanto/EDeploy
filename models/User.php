@@ -122,6 +122,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         );
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProject()
+    {
+        return $this->hasMany(DeployRight::className(), ['user_id' => 'id']);
+    }
+
     public function beforeValidate()
     {
         if (parent::beforeValidate()) {

@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "project".
@@ -22,6 +23,8 @@ class Project extends \yii\db\ActiveRecord
     const STATUS_ACTIVE     = 1;
     const STATUS_NOT_ACTIVE = 0;
 
+    public $permissionUser = array();
+
     /**
      * @inheritdoc
      */
@@ -38,7 +41,7 @@ class Project extends \yii\db\ActiveRecord
         return [
             [['title', 'command', 'username', 'host'], 'required'],
             [['category_id', 'last_user_deploy_id', 'active_status'], 'integer'],
-            [['last_deploy_date'], 'safe'],
+            [['last_deploy_date', 'permissionUser'], 'safe'],
             [['title', 'username', 'password', 'host'], 'string', 'max' => 255]
         ];
     }
@@ -76,6 +79,14 @@ class Project extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'last_user_deploy_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPermission()
+    {
+        return $this->hasMany(DeployRight::className(), ['project_id' => 'id']);
     }
 
     public function getStatus()
@@ -142,5 +153,27 @@ class Project extends \yii\db\ActiveRecord
             return true;
         }
         return false;
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        foreach($this->permission as $right)
+        {
+            $this->permissionUser[] = $right->user_id;
+        }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        DeployRight::deleteAll(['project_id' => $this->id]);
+        foreach($this->permissionUser as $user)
+        {
+            $rights = new DeployRight();
+            $rights->project_id = $this->id;
+            $rights->user_id = $user;
+            $rights->save();
+        }
     }
 }
