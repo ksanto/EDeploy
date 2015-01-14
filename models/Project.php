@@ -168,7 +168,7 @@ class Project extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
         DeployRight::deleteAll(['project_id' => $this->id]);
-        foreach($this->permissionUser as $user)
+        foreach((array)$this->permissionUser as $user)
         {
             $rights = new DeployRight();
             $rights->project_id = $this->id;

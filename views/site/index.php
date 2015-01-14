@@ -48,12 +48,17 @@ $this->title = 'Deploy';
                             'class' => \yii\grid\ActionColumn::className(),
                             'buttons' => [
                                 'deploy' => function ($url, $model) {
-                                        $url = Yii::$app->getUrlManager()->createUrl(['site/deploy', 'id' => $model->id]);
                                         return \yii\helpers\Html::a(
                                             'Deploy',
-                                            $url,
+                                            Yii::$app->getUrlManager()->createUrl(['site/deploy', 'id' => $model->id]),
                                             [
-                                                'class' => 'btn btn-danger'
+                                                'class' => 'btn btn-danger',
+                                                'disabled' => !(
+                                                    $model->getPermission()->where([
+                                                        'user_id' => Yii::$app->user->identity->id
+                                                    ])->one()
+                                                    || Yii::$app->user->identity->is_admin
+                                                )
                                             ]
                                         );
                                     }

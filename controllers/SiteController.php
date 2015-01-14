@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\DeployRight;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -9,7 +10,6 @@ use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 use app\models\LoginForm;
 use app\models\Category;
-use app\models\Project;
 
 class SiteController extends Controller
 {
@@ -25,16 +25,28 @@ class SiteController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    // allow authenticated users
                     [
+                        'actions' => ['deploy'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function($rule, $action) {
+                            return Yii::$app->user->identity->is_admin
+                                || (bool)DeployRight::find()->where([
+                                    'user_id' => Yii::$app->user->identity->id,
+                                    'project_id' => Yii::$app->getRequest()->get('id')
+                                ])->one();
+                        }
+                    ],
+                    [
+                        'actions' => ['index', 'logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index', 'login'],
+                        'actions' => ['login'],
                         'allow' => true,
                         'roles' => ['?'],
-                    ],
+                    ]
                 ],
             ],
         ];
@@ -59,12 +71,9 @@ class SiteController extends Controller
         if (\Yii::$app->user->isGuest) {
             return $this->redirect(['site/login'], 302);
         }
-        $dataProvider = new ActiveDataProvider([
-            'query' => Category::find(),
-        ]);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'dataProvider' => new ActiveDataProvider(['query' => Category::find()]),
         ]);
     }
 

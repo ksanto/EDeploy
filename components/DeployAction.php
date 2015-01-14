@@ -33,7 +33,6 @@ class DeployAction extends Action
      */
     public function run($id, $key = '')
     {
-
         $result = '';
         $model = Project::findOne($id);
 
