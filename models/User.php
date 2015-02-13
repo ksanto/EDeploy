@@ -148,7 +148,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 $this->auth_key     = Yii::$app->security->generateRandomString();
             } else {
                 // Если пароль не установили, то остается старый пароль
-                unset($this->password);
+                $this->password = $this->getOldAttribute('password');
             }
             return true;
         }

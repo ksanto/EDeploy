@@ -148,7 +148,7 @@ class Project extends \yii\db\ActiveRecord
                 );
             } else {
                 // Если пароль не установили, то остается старый пароль
-                unset($this->password);
+                $this->password = $this->getOldAttribute('password');
             }
             return true;
         }
