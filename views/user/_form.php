@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -19,6 +20,17 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'is_admin')->checkbox() ?>
+
+    <? if((bool)Yii::$app->user->identity->is_admin && $projects = app\models\Project::find()->all()) {
+        echo $form->field($model, 'permissionProject')
+            ->checkboxList(
+                ArrayHelper::map(
+                    $projects,
+                    'id',
+                    'title'
+                )
+            );
+    } ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -9,6 +9,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     const ADMIN     = 1;
     const NOT_ADMIN = 0;
+
+    public $permissionProject = array();
+
     /**
      * @inheritdoc
      */
@@ -24,6 +27,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['username', 'password'], 'required'],
+            ['permissionProject', 'safe'],
             [['username', 'password', 'auth_key'], 'string'],
             [['is_admin'], 'in', 'range' => array_keys($this->getRightList())],
             ['email', 'email']
@@ -153,5 +157,27 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             return true;
         }
         return false;
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        foreach($this->permission as $right)
+        {
+            $this->permissionProject[] = $right->project_id;
+        }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        DeployRight::deleteAll(['user_id' => $this->id]);
+        foreach((array)$this->permissionProject as $project)
+        {
+            $rights = new DeployRight();
+            $rights->project_id = $project;
+            $rights->user_id = $this->id;
+            $rights->save();
+        }
     }
 }
