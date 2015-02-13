@@ -10,6 +10,7 @@ namespace app\components;
 use Yii;
 use yii\base\Action;
 use app\models\Project;
+use app\models\User;
 
 class DeployAction extends Action
 {
@@ -27,8 +28,8 @@ class DeployAction extends Action
 
     /**
      * Выполняем выкладку
-     * @param $id
-     * @param $key
+     * @param int $id
+     * @param string $key
      * @return bool
      */
     public function run($id, $key = '')
@@ -50,11 +51,30 @@ class DeployAction extends Action
             $model->applyDeployData();
         }
 
+        $this->send($model, $result);
+
         if($this->render) {
             return $this->controller->render($this->id, [
                 'message' => $result
             ]);
         }
         return $result;
+    }
+
+    protected function send($model, $msg)
+    {
+        $users = User::find()->joinWith('permission')->where(
+            'user.email IS NOT NULL AND (user.is_admin='.User::ADMIN.' OR deploy_right.project_id='.$model->id.')'
+        )->all();
+
+        $messages = [];
+        foreach($users as $user) {
+            $messages[] = Yii::$app->mailer->compose()
+                ->setFrom(Yii::$app->params['adminEmail'])
+                ->setTo($user->email)
+                ->setSubject($model->title.'('.$model->category->title.')')
+                ->setTextBody($msg);
+        }
+        Yii::$app->mailer->sendMultiple($messages);
     }
 }

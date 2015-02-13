@@ -25,7 +25,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return [
             [['username', 'password'], 'required'],
             [['username', 'password', 'auth_key'], 'string'],
-            [['is_admin'], 'in', 'range' => array_keys($this->getPermissionList())],
+            [['is_admin'], 'in', 'range' => array_keys($this->getRightList())],
+            ['email', 'email']
         ];
     }
 
@@ -40,6 +41,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'password' => 'Password',
             'auth_key' => 'Auth Key',
             'is_admin' => 'Is Admin',
+            'email' => 'E-mail',
         ];
     }
 
@@ -105,16 +107,16 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return Yii::$app->security->validatePassword($password, $this->password);
     }
 
-    public function getPermission()
+    public function getRight()
     {
-        $status = $this->getPermissionList();
+        $status = $this->getRightList();
         if(!isset($status[$this->is_admin]))
             return false;
 
         return $status[$this->is_admin];
     }
 
-    public function getPermissionList()
+    public function getRightList()
     {
         return array(
             self::ADMIN     => 'Yes',
@@ -126,6 +128,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * @return \yii\db\ActiveQuery
      */
     public function getProject()
+    {
+        return $this->hasMany(DeployRight::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPermission()
     {
         return $this->hasMany(DeployRight::className(), ['user_id' => 'id']);
     }

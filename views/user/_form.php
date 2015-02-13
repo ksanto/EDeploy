@@ -16,9 +16,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password', ['enableClientValidation' => false])->passwordInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'is_admin')->checkbox() ?>
+    <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>
 
-<!--    --><?//= $form->field() ?>
+    <?= $form->field($model, 'is_admin')->checkbox() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

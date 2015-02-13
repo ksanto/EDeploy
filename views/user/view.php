@@ -30,9 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'username',
+            'email',
             [
                 'attribute' => 'is_admin',
-                'value' =>  $model->getPermission()
+                'value' =>  $model->getRight()
             ]
         ],
     ]) ?>
